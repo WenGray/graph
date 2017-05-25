@@ -43,19 +43,22 @@ class SparseGraph:
                 print("{}  ".format(n), end="")
             print()
 
+    def iter(self, v):
+        # 返回一个对象的迭代器
+        return SparseGraph.IterSparse(self, v).iter()
 
-# 迭代器
-class IterSparse:
-    def __init__(self, graph, v):
-        self.graph = graph
-        self.v = v
-        self.index = 0
-        self.count = len(graph.g[v])
-        self.end = False
+    # 迭代器
+    class IterSparse:
+        def __init__(self, graph, v):
+            self.graph = graph
+            self.v = v
+            self.index = 0
+            self.count = len(graph.g[v])
+            self.end = False
 
-    def iter(self):
-        while True:
-            if self.index >= self.count:
-                return
-            yield self.graph.g[self.v][self.index]
-            self.index += 1
+        def iter(self):
+            while True:
+                if self.index >= self.count:
+                    return
+                yield self.graph.g[self.v][self.index]
+                self.index += 1

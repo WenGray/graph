@@ -9,3 +9,7 @@ if __name__ == '__main__':
     # 计算联通分量
     al = algorithm.Component(graph)
     print("计算得到 component = {}".format(al.count()))
+
+    # Path
+    path = algorithm.Path(graph, 1)
+    path.show_path(4)
