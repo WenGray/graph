@@ -163,7 +163,7 @@ class MultiShortestPath:
                 path.append(i)
                 return
 
-    # 复制以 last 结尾的数组 copies 次 (last 不需要在数组结尾)
+    # 复制以 last 结尾的数组 copies 次 (last 不需要在数组结尾) [9. 3. 2]  last为3 即复制[9, 3]
     def copy_with_last(self, last, copies):
         temp_arr = []
         for path in self.m_path:
