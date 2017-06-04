@@ -62,3 +62,80 @@ class SparseGraph:
                     return
                 yield self.graph.g[self.v][self.index]
                 self.index += 1
+
+
+# 边
+class Edge:
+    def __init__(self, v, w, weight):
+        self.v = v
+        self.w = w
+        self.weight = weight
+
+    def v(self):
+        return self.v
+
+    def w(self):
+        return self.w
+
+    def wt(self):
+        return self.weight
+
+    def other(self, v):
+        assert (v == self.v or v == self.w)
+        return self.v if v == self.w else self.w
+
+    def __lt__(self, other):
+        return self.wt() < other.wt()
+
+    def __gt__(self, other):
+        return self.wt() > other.wt()
+
+    def __cmp__(self, other):
+        return self.wt() == other.wt()
+
+    def __str__(self):
+        return ' {} <-> {} : {}'.format(self.v, self.w, self.weight)
+
+
+# 有权图
+class SparseGraphWeight:
+    def __init__(self, n, directed):
+        # 节点个数通过read 从文件中读取
+        self.n = n
+        # 边数
+        self.m = 0
+        self.directed = directed
+        self.g = []
+        for i in range(n):
+            self.g.append([])
+
+    def __getattr__(self, item):
+        if item == 'nodes':
+            return self.n
+        elif item == 'edges':
+            return self.m
+
+    def add_edge(self, v, w, weight):
+        # 检测是否存在
+        if self.is_exist(v, w):
+            return
+        edge_v = Edge(v, w, weight)
+        self.g[v].append(edge_v)
+        if not self.directed:
+            if not self.is_exist(w, v):
+                edge_w = Edge(w, v, weight)
+                self.g[w].append(edge_w)
+        self.m += 1
+
+    def is_exist(self, v, w):
+        for edge in self.g[v]:
+            if edge.other(v) == w:
+                return True
+        return False
+
+    def show(self):
+        for index, edges in enumerate(self.g):
+            print('{} ---> '.format(index), end=' ')
+            for edge in edges:
+                print(edge, end=' ')
+            print()
