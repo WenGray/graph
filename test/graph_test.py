@@ -1,8 +1,10 @@
 # __author__ = "gray"
 from implement import graphs, util, algorithm
+import os
 
 if __name__ == '__main__':
-    file_path = '/Users/leigang/Documents/Work/python-workspace/graph/testMultiPath.txt'
+    folder_path = os.path.abspath(os.path.dirname(os.getcwd()) + os.path.sep + ".")
+    file_path = folder_path + os.path.sep + 'testMultiPath.txt'
     graph = graphs.SparseGraph(9, False)
     util.read_graph(file_path, graph)
     # graph.show()

@@ -67,22 +67,22 @@ class SparseGraph:
 # 边
 class Edge:
     def __init__(self, v, w, weight):
-        self.v = v
-        self.w = w
+        self.n1 = v
+        self.n2 = w
         self.weight = weight
 
     def v(self):
-        return self.v
+        return self.n1
 
     def w(self):
-        return self.w
+        return self.n2
 
     def wt(self):
         return self.weight
 
     def other(self, v):
-        assert (v == self.v or v == self.w)
-        return self.v if v == self.w else self.w
+        assert (v == self.n1 or v == self.n2)
+        return self.n1 if v == self.n2 else self.n2
 
     def __lt__(self, other):
         return self.wt() < other.wt()
@@ -94,7 +94,7 @@ class Edge:
         return self.wt() == other.wt()
 
     def __str__(self):
-        return ' {} <-> {} : {}'.format(self.v, self.w, self.weight)
+        return ' {} <-> {} : {}'.format(self.n1, self.n2, self.weight)
 
 
 # 有权图
@@ -139,3 +139,24 @@ class SparseGraphWeight:
             for edge in edges:
                 print(edge, end=' ')
             print()
+
+    def iter(self, v):
+        # 返回一个对象的迭代器
+        return SparseGraphWeight.IterGraph(self, v).iter()
+
+        # 迭代器
+
+    class IterGraph:
+        def __init__(self, graph, v):
+            self.graph = graph
+            self.v = v
+            self.index = 0
+            self.count = len(graph.g[v])
+            self.end = False
+
+        def iter(self):
+            while True:
+                if self.index >= self.count:
+                    return
+                yield self.graph.g[self.v][self.index]
+                self.index += 1

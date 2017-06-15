@@ -1,5 +1,6 @@
 # __author__ = "gray"
 import queue
+from implement import util
 
 
 # 计算联通分量
@@ -178,7 +179,6 @@ class MultiShortestPath:
             for arr in temp_arr:
                 self.m_path.append(arr.copy())
 
-
     def show_path(self, w):
         self.path(w)
         print("M_BFS: 距离: {}".format(self.ord[w]))
@@ -188,3 +188,36 @@ class MultiShortestPath:
                     print(node)
                 else:
                     print("{} -->".format(node), end=" ")
+
+
+# 最小生成树
+class MST:
+    def __init__(self, graph):
+        self.graph = graph
+        self.visited = [False] * graph.nodes
+        self.min_heap = util.MinHeap(graph.edges)
+        self.weight = 0
+        # 切分定理， 访问第一个点
+        self.visit(0)
+        while not self.min_heap.empty():
+            edge = self.min_heap.extract()
+            # 判断是否访问过
+            if self.visited[edge.v()] == self.visited[edge.w()]:
+                continue
+            # 没有访问的边
+            if self.visited[edge.v()]:
+                self.visit(edge.w())
+            elif self.visited[edge.w()]:
+                self.visit(edge.v())
+            self.weight += edge.wt()
+
+    def visit(self, v):
+        # 访问某个点
+        self.visited[v] = True
+        ite = self.graph.iter(v)
+        for e in ite:
+            if not self.visited[e.other(v)]:
+                self.min_heap.insert(e)
+
+    def wt(self):
+        return self.weight
